@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
@@ -81,7 +82,17 @@ namespace NHibernate.Cfg
 
 		protected internal SettingsFactory settingsFactory;
 
-		private static readonly XmlSerializer mappingDocumentSerializer = new XmlSerializer(typeof(HbmMapping));
+        private static XmlSerializer _mappingDocumentSerializer = null;
+
+        private XmlSerializer mappingDocumentSerializer
+        {
+            get
+            {
+                if (_mappingDocumentSerializer == null)
+                    _mappingDocumentSerializer = new XmlSerializer(typeof(HbmMapping));
+                return _mappingDocumentSerializer;
+            }
+        } 
 
 		#region ISerializable Members
 		public Configuration(SerializationInfo info, StreamingContext context)
