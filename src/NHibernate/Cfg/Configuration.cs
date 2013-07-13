@@ -80,7 +80,17 @@ namespace NHibernate.Cfg
 
 		protected internal SettingsFactory settingsFactory;
 
-		private static readonly XmlSerializer mappingDocumentSerializer = new XmlSerializer(typeof(HbmMapping));
+        private static XmlSerializer _mappingDocumentSerializer = null;
+
+        private XmlSerializer mappingDocumentSerializer
+        {
+            get
+            {
+                if (_mappingDocumentSerializer == null)
+                    _mappingDocumentSerializer = new XmlSerializer(typeof(HbmMapping));
+                return _mappingDocumentSerializer;
+            }
+        } 
 
 		#region ISerializable Members
 		public Configuration(SerializationInfo info, StreamingContext context)
